@@ -21,16 +21,14 @@ class MockFirebaseStorage implements FirebaseStorage {
   // Originally from https://github.com/firebase/flutterfire/blob/3dfc0997050ee4351207c355b2c22b46885f971f/packages/firebase_storage/firebase_storage/lib/src/firebase_storage.dart#L111.
   @override
   Reference refFromURL(String url) {
-    assert(url.startsWith('gs://') || url.startsWith('http'),
-        "'a url must start with 'gs://' or 'https://'");
+    assert(url.startsWith('gs://') || url.startsWith('http'), "'a url must start with 'gs://' or 'https://'");
 
     String? path;
 
     if (url.startsWith('http')) {
       final parts = partsFromHttpUrl(url);
 
-      assert(parts != null,
-          "url could not be parsed, ensure it's a valid storage url");
+      assert(parts != null, "url could not be parsed, ensure it's a valid storage url");
 
       path = parts!['path'];
     } else {
@@ -55,9 +53,7 @@ class MockUploadTask implements UploadTask {
         _snapshot = MockTaskSnapshot(reference);
 
   @override
-  Future<S> then<S>(FutureOr<S> Function(TaskSnapshot) onValue,
-          {Function? onError}) =>
-      delegate.then(onValue, onError: onError);
+  Future<S> then<S>(FutureOr<S> Function(TaskSnapshot) onValue, {Function? onError}) => delegate.then(onValue, onError: onError);
 
   @override
   Stream<TaskSnapshot> asStream() {
@@ -70,14 +66,12 @@ class MockUploadTask implements UploadTask {
   }
 
   @override
-  Future<TaskSnapshot> timeout(Duration timeLimit,
-      {FutureOr<TaskSnapshot> Function()? onTimeout}) {
+  Future<TaskSnapshot> timeout(Duration timeLimit, {FutureOr<TaskSnapshot> Function()? onTimeout}) {
     return delegate.timeout(timeLimit, onTimeout: onTimeout);
   }
 
   @override
-  Future<TaskSnapshot> catchError(Function onError,
-      {bool Function(Object error)? test}) {
+  Future<TaskSnapshot> catchError(Function onError, {bool Function(Object error)? test}) {
     return delegate.catchError(onError, test: test);
   }
 
@@ -120,6 +114,12 @@ class MockTaskSnapshot implements TaskSnapshot {
 
   @override
   TaskState get state => TaskState.success;
+
+  @override
+  int get bytesTransferred => 1;
+
+  @override
+  int get totalBytes => 1;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
